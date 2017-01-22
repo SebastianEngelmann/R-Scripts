@@ -1,6 +1,6 @@
 # clear workspace
 rm(list = ls(all.names = TRUE))
-setwd("~/Documents/GitHub/WINFO_Projekt")
+setwd("/home/sebastian/Dokumente/GitHubRepos/WINFO_Projekt/")
 
 # load packages
 library(scales)
@@ -149,11 +149,11 @@ ggplot() + geom_bar(aes(y = Percentage, x = PostCodeArea, fill = DeliveryInTime)
                                  legend.title = element_blank()) + scale_y_continuous(labels = dollar_format(suffix = "%", prefix = "")) + coord_flip()
 
 # Erstellen eines kompakten Datensatz fuer Plot DeliveryInTime
-State <- factor(rep(c("Baden-Wurttemberg", "Bayern", "Brandenburg", "Bremen", "Hamburg", "Hessen", "Mecklenburg-Vorpommern", "Niedersachsen", "Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland", "Sachsen", "Sachsen-Anhalt", "Schleswig-Holstein", "Thueringen"), 2))
+State <- factor(rep(c("Baden-Wurttemberg", "Bayern", "Berlin", "Brandenburg", "Bremen", "Hamburg", "Hessen", "Mecklenburg-Vorpommern", "Niedersachsen", "Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland", "Sachsen", "Sachsen-Anhalt", "Schleswig-Holstein", "Thueringen"), 2))
 DeliveryInTimeWT <- factor(c(rep("Yes", 16), rep("No", 16)))
 dataset7 <- data.frame(State, DeliveryInTimeWT)
 # Berechnen der Anteile fuer Zustellung im TimeSlot
-dataset7$Percentage[dataset7$State == District & dataset7$DeliveryInTimeWT == "Yes"] <- round(dim(filter(dataset5, State == District & DeliveryInTimeWT == "Yes"))[1] / dim(filter(dataset5, State == District))[1] * 100, 2) 
+dataset7$Percentage[dataset7$State == "Baden-Wurttemberg" & dataset7$DeliveryInTimeWT == "Yes"] <- round(dim(filter(dataset5, State == "Baden-Wurttemberg" & DeliveryInTimeWT == "Yes"))[1] / dim(filter(dataset5, State == "Baden-Wurttemberg"))[1] * 100, 2) 
 dataset7$Percentage[dataset7$State == "Bayern" & dataset7$DeliveryInTimeWT == "Yes"] <- round(dim(filter(dataset5, State == "Bayern" & DeliveryInTimeWT == "Yes"))[1] / dim(filter(dataset5, State == "Bayern"))[1] * 100, 2)
 dataset7$Percentage[dataset7$State == "Berlin" & dataset7$DeliveryInTimeWT == "Yes"] <- round(dim(filter(dataset5, State == "Berlin" & DeliveryInTimeWT == "Yes"))[1] / dim(filter(dataset5, State == "Berlin"))[1] * 100, 2)
 dataset7$Percentage[dataset7$State == "Brandenburg" & dataset7$DeliveryInTimeWT == "Yes"] <- round(dim(filter(dataset5, State == "Brandenburg" & DeliveryInTimeWT == "Yes"))[1] / dim(filter(dataset5, State == "Brandenburg"))[1] * 100, 2)
@@ -170,7 +170,7 @@ dataset7$Percentage[dataset7$State == "Sachsen-Anhalt" & dataset7$DeliveryInTime
 dataset7$Percentage[dataset7$State == "Schleswig-Holstein" & dataset7$DeliveryInTimeWT == "Yes"] <- round(dim(filter(dataset5, State == "Schleswig-Holstein" & DeliveryInTimeWT == "Yes"))[1] / dim(filter(dataset5, State == "Schleswig-Holstein"))[1] * 100, 2)
 dataset7$Percentage[dataset7$State == "Thueringen" & dataset7$DeliveryInTimeWT == "Yes"] <- round(dim(filter(dataset5, State == "Thueringen" & DeliveryInTimeWT == "Yes"))[1] / dim(filter(dataset5, State == "Thueringen"))[1] * 100, 2)
 # Berechnung der Anteile fuer Zustellung ausserhalb des TimeSlot
-dataset7$Percentage[dataset7$State == District & dataset7$DeliveryInTimeWT == "No"] <- round(100 - dataset7$Percentage[dataset7$State == District & dataset7$DeliveryInTimeWT == "Yes"], 2)
+dataset7$Percentage[dataset7$State == "Baden-Wurttemberg" & dataset7$DeliveryInTimeWT == "No"] <- round(100 - dataset7$Percentage[dataset7$State == "Baden-Wurttemberg" & dataset7$DeliveryInTimeWT == "Yes"], 2)
 dataset7$Percentage[dataset7$State == "Bayern" & dataset7$DeliveryInTimeWT == "No"] <- round(100 - dataset7$Percentage[dataset7$State == "Bayern" & dataset7$DeliveryInTimeWT == "Yes"], 2)
 dataset7$Percentage[dataset7$State == "Berlin" & dataset7$DeliveryInTimeWT == "No"] <- round(100 - dataset7$Percentage[dataset7$State == "Berlin" & dataset7$DeliveryInTimeWT == "Yes"], 2)
 dataset7$Percentage[dataset7$State == "Brandenburg" & dataset7$DeliveryInTimeWT == "No"] <- round(100 - dataset7$Percentage[dataset7$State == "Brandenburg" & dataset7$DeliveryInTimeWT == "Yes"], 2)
@@ -192,7 +192,7 @@ dataset7 <- ddply(dataset7, .(State), transform, Position = cumsum(Percentage) -
 #levels(dataset6$DeliveryInTime) <- list("Yes" = 1, "No" = 0)
 levels(dataset6$DeliveryInTimeWT) <- list("No" = 0, "Yes" = 1)
 # Umordnung der Level von PostCodeArea (Plot: y-Achse absteigend)
-dataset7$State <- factor(dataset7$State, levels = c("Thueringen", "Schleswig-Holstein", "Sachsen-Anhalt", "Sachsen", "Saarland", "Rheinland-Pfalz", "Nordrhein-Westfalen", "Niedersachsen", "Mecklenburg-Vorpommern", "Hessen", "Hamburg", "Bremen", "Brandenburg", "Berlin", "Bayern", District))
+dataset7$State <- factor(dataset7$State, levels = c("Thueringen", "Schleswig-Holstein", "Sachsen-Anhalt", "Sachsen", "Saarland", "Rheinland-Pfalz", "Nordrhein-Westfalen", "Niedersachsen", "Mecklenburg-Vorpommern", "Hessen", "Hamburg", "Bremen", "Brandenburg", "Berlin", "Bayern", "Baden-Wurttemberg"))
 # Erstellen des Plot
 ggplot() + geom_bar(aes(y = Percentage, x = State, fill = DeliveryInTimeWT), data = dataset7, stat = "identity") + geom_text(data = dataset7, aes(x = State, y = Position, label = paste0(Percentage, "%")), size = 4) + 
   scale_fill_manual(values = c("darkred", "darkgreen"), breaks = c("Yes", "No")) + ggtitle("DeliverySurvey (with Tolerance)") + xlab("State") + 
@@ -200,11 +200,11 @@ ggplot() + geom_bar(aes(y = Percentage, x = State, fill = DeliveryInTimeWT), dat
                                  legend.title = element_blank()) + scale_y_continuous(labels = dollar_format(suffix = "%", prefix = "")) + coord_flip()
 
 # Erstellen eines kompakten Datensatz fuer Plot DeliveryInTime
-State <- factor(rep(c(District, "Bayern", "Berlin", "Brandenburg", "Bremen", "Hamburg", "Hessen", "Mecklenburg-Vorpommern", "Niedersachsen", "Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland", "Sachsen", "Sachsen-Anhalt", "Schleswig-Holstein", "Thueringen"), 2))
+State <- factor(rep(c("Baden-Wurttemberg", "Bayern", "Berlin", "Brandenburg", "Bremen", "Hamburg", "Hessen", "Mecklenburg-Vorpommern", "Niedersachsen", "Nordrhein-Westfalen", "Rheinland-Pfalz", "Saarland", "Sachsen", "Sachsen-Anhalt", "Schleswig-Holstein", "Thueringen"), 2))
 DeliveryInTime <- factor(c(rep("Yes", 16), rep("No", 16)))
 dataset9 <- data.frame(State, DeliveryInTime)
 # Berechnen der Anteile fuer Zustellung im TimeSlot
-dataset9$Percentage[dataset9$State == District & dataset9$DeliveryInTime == "Yes"] <- round(dim(filter(dataset5, State == District & DeliveryInTime == "Yes"))[1] / dim(filter(dataset5, State == District))[1] * 100, 2) 
+dataset9$Percentage[dataset9$State == "Baden-Wurttemberg" & dataset9$DeliveryInTime == "Yes"] <- round(dim(filter(dataset5, State == "Baden-Wurttemberg" & DeliveryInTime == "Yes"))[1] / dim(filter(dataset5, State == "Baden-Wurttemberg"))[1] * 100, 2) 
 dataset9$Percentage[dataset9$State == "Bayern" & dataset9$DeliveryInTime == "Yes"] <- round(dim(filter(dataset5, State == "Bayern" & DeliveryInTime == "Yes"))[1] / dim(filter(dataset5, State == "Bayern"))[1] * 100, 2)
 dataset9$Percentage[dataset9$State == "Berlin" & dataset9$DeliveryInTime == "Yes"] <- round(dim(filter(dataset5, State == "Berlin" & DeliveryInTime == "Yes"))[1] / dim(filter(dataset5, State == "Berlin"))[1] * 100, 2)
 dataset9$Percentage[dataset9$State == "Brandenburg" & dataset9$DeliveryInTime == "Yes"] <- round(dim(filter(dataset5, State == "Brandenburg" & DeliveryInTime == "Yes"))[1] / dim(filter(dataset5, State == "Brandenburg"))[1] * 100, 2)
@@ -221,7 +221,7 @@ dataset9$Percentage[dataset9$State == "Sachsen-Anhalt" & dataset9$DeliveryInTime
 dataset9$Percentage[dataset9$State == "Schleswig-Holstein" & dataset9$DeliveryInTime == "Yes"] <- round(dim(filter(dataset5, State == "Schleswig-Holstein" & DeliveryInTime == "Yes"))[1] / dim(filter(dataset5, State == "Schleswig-Holstein"))[1] * 100, 2)
 dataset9$Percentage[dataset9$State == "Thueringen" & dataset9$DeliveryInTime == "Yes"] <- round(dim(filter(dataset5, State == "Thueringen" & DeliveryInTime == "Yes"))[1] / dim(filter(dataset5, State == "Thueringen"))[1] * 100, 2)
 # Berechnung der Anteile fuer Zustellung ausserhalb des TimeSlot
-dataset9$Percentage[dataset9$State == District & dataset9$DeliveryInTime == "No"] <- round(100 - dataset9$Percentage[dataset9$State == District & dataset9$DeliveryInTime == "Yes"], 2)
+dataset9$Percentage[dataset9$State == "Baden-Wurttemberg" & dataset9$DeliveryInTime == "No"] <- round(100 - dataset9$Percentage[dataset9$State == "Baden-Wurttemberg" & dataset9$DeliveryInTime == "Yes"], 2)
 dataset9$Percentage[dataset9$State == "Bayern" & dataset9$DeliveryInTime == "No"] <- round(100 - dataset9$Percentage[dataset9$State == "Bayern" & dataset9$DeliveryInTime == "Yes"], 2)
 dataset9$Percentage[dataset9$State == "Berlin" & dataset9$DeliveryInTime == "No"] <- round(100 - dataset9$Percentage[dataset9$State == "Berlin" & dataset9$DeliveryInTime == "Yes"], 2)
 dataset9$Percentage[dataset9$State == "Brandenburg" & dataset9$DeliveryInTime == "No"] <- round(100 - dataset9$Percentage[dataset9$State == "Brandenburg" & dataset9$DeliveryInTime == "Yes"], 2)
@@ -243,7 +243,7 @@ dataset9 <- ddply(dataset9, .(State), transform, Position = cumsum(Percentage) -
 #levels(dataset6$DeliveryInTime) <- list("Yes" = 1, "No" = 0)
 levels(dataset7$DeliveryInTime) <- list("No" = 0, "Yes" = 1)
 # Umordnung der Level von PostCodeArea (Plot: y-Achse absteigend)
-dataset9$State <- factor(dataset9$State, levels = c("Thueringen", "Schleswig-Holstein", "Sachsen-Anhalt", "Sachsen", "Saarland", "Rheinland-Pfalz", "Nordrhein-Westfalen", "Niedersachsen", "Mecklenburg-Vorpommern", "Hessen", "Hamburg", "Bremen", "Brandenburg", "Berlin", "Bayern", District))
+dataset9$State <- factor(dataset9$State, levels = c("Thueringen", "Schleswig-Holstein", "Sachsen-Anhalt", "Sachsen", "Saarland", "Rheinland-Pfalz", "Nordrhein-Westfalen", "Niedersachsen", "Mecklenburg-Vorpommern", "Hessen", "Hamburg", "Bremen", "Brandenburg", "Berlin", "Bayern", "Baden-Wurttemberg"))
 
 grid.arrange(ggplot() + geom_bar(aes(y = Percentage, x = State, fill = DeliveryInTimeWT), data = dataset7, stat = "identity") + geom_text(data = dataset7, aes(x = State, y = Position, label = paste0(Percentage, "%")), size = 4) + 
                scale_fill_manual(values = c("darkred", "darkgreen"), breaks = c("Yes", "No")) + ggtitle("DeliverySurvey (with Tolerance)") + xlab("State") + 
@@ -1251,7 +1251,7 @@ hamburg$District[hamburg$PostCode == "22113" | hamburg$PostCode == "22111" | ham
                    hamburg$PostCode == "20359" | hamburg$PostCode == "20459" | hamburg$PostCode == "22767" | 
                    hamburg$PostCode == "22769" | hamburg$PostCode == "20457" | hamburg$PostCode == "21107" | 
                    hamburg$PostCode == "20539" | hamburg$PostCode == "21109" | hamburg$PostCode == "21129" | 
-                   hamburg$PostCode == "20539" | hamburg$PostCode == "21107" | hamburg$PostCode == "21109"] <- "Mitte"
+                   hamburg$PostCode == "20539" | hamburg$PostCode == "21107" | hamburg$PostCode == "21109"] <- "Hamburg-Mitte"
 
 hamburg$District[hamburg$PostCode == "20359" | hamburg$PostCode == "22765" | hamburg$PostCode == "22767" | 
                    hamburg$PostCode == "22769" | hamburg$PostCode == "20257" | hamburg$PostCode == "20357" | 
@@ -1302,7 +1302,7 @@ hamburg$District[hamburg$PostCode == "20251" | hamburg$PostCode == "22297" | ham
                    hamburg$PostCode == "22337" | hamburg$PostCode == "22391" | hamburg$PostCode == "22081" | 
                    hamburg$PostCode == "22085" | hamburg$PostCode == "22087" | hamburg$PostCode == "20249" | 
                    hamburg$PostCode == "22297" | hamburg$PostCode == "22299" | hamburg$PostCode == "22301" | 
-                   hamburg$PostCode == "22303" | hamburg$PostCode == "22305"] <- "Nord"
+                   hamburg$PostCode == "22303" | hamburg$PostCode == "22305"] <- "Hamburg-Nord"
 
 hamburg$District[hamburg$PostCode == "22359" | hamburg$PostCode == "22395" | hamburg$PostCode == "22047" | 
                    hamburg$PostCode == "22159" | hamburg$PostCode == "22175" | hamburg$PostCode == "22177" | 
@@ -1375,7 +1375,7 @@ dat23 <- filter(hamburg, DeliveryDate >= "2016-05-01" & DeliveryDate <= "2016-05
 dat24 <- filter(hamburg, DeliveryDate >= "2016-06-01" & DeliveryDate <= "2016-06-30")
 
 # Hamburg Mitte
-District <- rep("Mitte", 48)
+District <- rep("Hamburg-Mitte", 48)
 Date <- rep(c("2014-07", "2014-08", "2014-09", "2014-10", "2014-11", "2014-12", "2015-01", "2015-02", "2015-03", "2015-04",
               "2015-05", "2015-06", "2015-07", "2015-08", "2015-09", "2015-10", "2015-11", "2015-12", "2016-01", "2016-02", 
               "2016-03", "2016-04", "2016-05", "2016-06"), 2)
@@ -1384,54 +1384,54 @@ DeliveryInTime <- rep(NA, 48)
 TimeSlot <- c(rep("with tolerance", 24), rep("without tolerance", 24))
 hamburg_mitte <- data.frame(District, Date, DeliveryInTime, as.factor(TimeSlot)) 
 
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2014-07" & TimeSlot == "with tolerance"] <- dim(filter(dat01, DeliveryInTimeWT == "Yes" & District == "Mitte"))[1] / dim(filter(dat01, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2014-07" & TimeSlot == "without tolerance"] <- dim(filter(dat01, DeliveryInTime == "Yes" & District == "Mitte"))[1] / dim(filter(dat01, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2014-08" & TimeSlot == "with tolerance"] <- dim(filter(dat02, DeliveryInTimeWT == "Yes" & District == "Mitte"))[1] / dim(filter(dat02, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2014-08" & TimeSlot == "without tolerance"] <- dim(filter(dat02, DeliveryInTime == "Yes" & District == "Mitte"))[1] / dim(filter(dat02, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2014-09" & TimeSlot == "with tolerance"] <- dim(filter(dat03, DeliveryInTimeWT == "Yes" & District == "Mitte"))[1] / dim(filter(dat03, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2014-09" & TimeSlot == "without tolerance"] <- dim(filter(dat03, DeliveryInTime == "Yes" & District == "Mitte"))[1] / dim(filter(dat03, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2014-10" & TimeSlot == "with tolerance"] <- dim(filter(dat04, DeliveryInTimeWT == "Yes" & District == "Mitte"))[1] / dim(filter(dat04, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2014-10" & TimeSlot == "without tolerance"] <- dim(filter(dat04, DeliveryInTime == "Yes" & District == "Mitte"))[1] / dim(filter(dat04, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2014-11" & TimeSlot == "with tolerance"] <- dim(filter(dat05, DeliveryInTimeWT == "Yes" & District == "Mitte"))[1] / dim(filter(dat05, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2014-11" & TimeSlot == "without tolerance"] <- dim(filter(dat05, DeliveryInTime == "Yes" & District == "Mitte"))[1] / dim(filter(dat05, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2014-12" & TimeSlot == "with tolerance"] <- dim(filter(dat06, DeliveryInTimeWT == "Yes" & District == "Mitte"))[1] / dim(filter(dat06, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2014-12" & TimeSlot == "without tolerance"] <- dim(filter(dat06, DeliveryInTime == "Yes" & District == "Mitte"))[1] / dim(filter(dat06, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-01" & TimeSlot == "with tolerance"] <- dim(filter(dat07, DeliveryInTimeWT == "Yes" & District == "Mitte"))[1] / dim(filter(dat07, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-01" & TimeSlot == "without tolerance"] <- dim(filter(dat07, DeliveryInTime == "Yes" & District == "Mitte"))[1] / dim(filter(dat07, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-02" & TimeSlot == "with tolerance"] <- dim(filter(dat08, DeliveryInTimeWT == "Yes" & District == "Mitte"))[1] / dim(filter(dat08, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-02" & TimeSlot == "without tolerance"] <- dim(filter(dat08, DeliveryInTime == "Yes" & District == "Mitte"))[1] / dim(filter(dat08, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-03" & TimeSlot == "with tolerance"] <- dim(filter(dat09, DeliveryInTimeWT == "Yes" & District == "Mitte"))[1] / dim(filter(dat09, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-03" & TimeSlot == "without tolerance"] <- dim(filter(dat09, DeliveryInTime == "Yes" & District == "Mitte"))[1] / dim(filter(dat09, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-04" & TimeSlot == "with tolerance"] <- dim(filter(dat10, DeliveryInTimeWT == "Yes" & District == "Mitte"))[1] / dim(filter(dat10, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-04" & TimeSlot == "without tolerance"] <- dim(filter(dat10, DeliveryInTime == "Yes" & District == "Mitte"))[1] / dim(filter(dat10, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-05" & TimeSlot == "with tolerance"] <- dim(filter(dat11, DeliveryInTimeWT == "Yes" & District == "Mitte"))[1] / dim(filter(dat11, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-05" & TimeSlot == "without tolerance"] <- dim(filter(dat11, DeliveryInTime == "Yes" & District == "Mitte"))[1] / dim(filter(dat11, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-06" & TimeSlot == "with tolerance"] <- dim(filter(dat12, DeliveryInTimeWT == "Yes" & District == "Mitte"))[1] / dim(filter(dat12, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-06" & TimeSlot == "without tolerance"] <- dim(filter(dat12, DeliveryInTime == "Yes" & District == "Mitte"))[1] / dim(filter(dat12, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-07" & TimeSlot == "with tolerance"] <- dim(filter(dat13, DeliveryInTimeWT == "Yes" & District == "Mitte"))[1] / dim(filter(dat13, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-07" & TimeSlot == "without tolerance"] <- dim(filter(dat13, DeliveryInTime == "Yes" & District == "Mitte"))[1] / dim(filter(dat13, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-08" & TimeSlot == "with tolerance"] <- dim(filter(dat14, DeliveryInTimeWT == "Yes" & District == "Mitte"))[1] / dim(filter(dat14, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-08" & TimeSlot == "without tolerance"] <- dim(filter(dat14, DeliveryInTime == "Yes" & District == "Mitte"))[1] / dim(filter(dat14, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-09" & TimeSlot == "with tolerance"] <- dim(filter(dat15, DeliveryInTimeWT == "Yes" & District == "Mitte"))[1] / dim(filter(dat15, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-09" & TimeSlot == "without tolerance"] <- dim(filter(dat15, DeliveryInTime == "Yes" & District == "Mitte"))[1] / dim(filter(dat15, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-10" & TimeSlot == "with tolerance"] <- dim(filter(dat16, DeliveryInTimeWT == "Yes" & District == "Mitte"))[1] / dim(filter(dat16, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-10" & TimeSlot == "without tolerance"] <- dim(filter(dat16, DeliveryInTime == "Yes" & District == "Mitte"))[1] / dim(filter(dat16, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-11" & TimeSlot == "with tolerance"] <- dim(filter(dat17, DeliveryInTimeWT == "Yes" & District == "Mitte"))[1] / dim(filter(dat17, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-11" & TimeSlot == "without tolerance"] <- dim(filter(dat17, DeliveryInTime == "Yes" & District == "Mitte"))[1] / dim(filter(dat17, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-12" & TimeSlot == "with tolerance"] <- dim(filter(dat18, DeliveryInTimeWT == "Yes" & District == "Mitte"))[1] / dim(filter(dat18, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-12" & TimeSlot == "without tolerance"] <- dim(filter(dat18, DeliveryInTime == "Yes" & District == "Mitte"))[1] / dim(filter(dat18, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2016-01" & TimeSlot == "with tolerance"] <- dim(filter(dat19, DeliveryInTimeWT == "Yes" & District == "Mitte"))[1] / dim(filter(dat19, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2016-01" & TimeSlot == "without tolerance"] <- dim(filter(dat19, DeliveryInTime == "Yes" & District == "Mitte"))[1] / dim(filter(dat19, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2016-02" & TimeSlot == "with tolerance"] <- dim(filter(dat20, DeliveryInTimeWT == "Yes" & District == "Mitte"))[1] / dim(filter(dat20, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2016-02" & TimeSlot == "without tolerance"] <- dim(filter(dat20, DeliveryInTime == "Yes" & District == "Mitte"))[1] / dim(filter(dat20, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2016-03" & TimeSlot == "with tolerance"] <- dim(filter(dat21, DeliveryInTimeWT == "Yes" & District == "Mitte"))[1] / dim(filter(dat21, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2016-03" & TimeSlot == "without tolerance"] <- dim(filter(dat21, DeliveryInTime == "Yes" & District == "Mitte"))[1] / dim(filter(dat21, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2016-04" & TimeSlot == "with tolerance"] <- dim(filter(dat22, DeliveryInTimeWT == "Yes" & District == "Mitte"))[1] / dim(filter(dat22, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2016-04" & TimeSlot == "without tolerance"] <- dim(filter(dat22, DeliveryInTime == "Yes" & District == "Mitte"))[1] / dim(filter(dat22, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2016-05" & TimeSlot == "with tolerance"] <- dim(filter(dat23, DeliveryInTimeWT == "Yes" & District == "Mitte"))[1] / dim(filter(dat23, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2016-05" & TimeSlot == "without tolerance"] <- dim(filter(dat23, DeliveryInTime == "Yes" & District == "Mitte"))[1] / dim(filter(dat23, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2016-06" & TimeSlot == "with tolerance"] <- dim(filter(dat24, DeliveryInTimeWT == "Yes" & District == "Mitte"))[1] / dim(filter(dat24, District == "Mitte"))[1]
-hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2016-06" & TimeSlot == "without tolerance"] <- dim(filter(dat24, DeliveryInTime == "Yes" & District == "Mitte"))[1] / dim(filter(dat24, District == "Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2014-07" & TimeSlot == "with tolerance"] <- dim(filter(dat01, DeliveryInTimeWT == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat01, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2014-07" & TimeSlot == "without tolerance"] <- dim(filter(dat01, DeliveryInTime == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat01, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2014-08" & TimeSlot == "with tolerance"] <- dim(filter(dat02, DeliveryInTimeWT == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat02, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2014-08" & TimeSlot == "without tolerance"] <- dim(filter(dat02, DeliveryInTime == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat02, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2014-09" & TimeSlot == "with tolerance"] <- dim(filter(dat03, DeliveryInTimeWT == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat03, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2014-09" & TimeSlot == "without tolerance"] <- dim(filter(dat03, DeliveryInTime == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat03, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2014-10" & TimeSlot == "with tolerance"] <- dim(filter(dat04, DeliveryInTimeWT == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat04, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2014-10" & TimeSlot == "without tolerance"] <- dim(filter(dat04, DeliveryInTime == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat04, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2014-11" & TimeSlot == "with tolerance"] <- dim(filter(dat05, DeliveryInTimeWT == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat05, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2014-11" & TimeSlot == "without tolerance"] <- dim(filter(dat05, DeliveryInTime == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat05, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2014-12" & TimeSlot == "with tolerance"] <- dim(filter(dat06, DeliveryInTimeWT == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat06, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2014-12" & TimeSlot == "without tolerance"] <- dim(filter(dat06, DeliveryInTime == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat06, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-01" & TimeSlot == "with tolerance"] <- dim(filter(dat07, DeliveryInTimeWT == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat07, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-01" & TimeSlot == "without tolerance"] <- dim(filter(dat07, DeliveryInTime == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat07, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-02" & TimeSlot == "with tolerance"] <- dim(filter(dat08, DeliveryInTimeWT == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat08, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-02" & TimeSlot == "without tolerance"] <- dim(filter(dat08, DeliveryInTime == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat08, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-03" & TimeSlot == "with tolerance"] <- dim(filter(dat09, DeliveryInTimeWT == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat09, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-03" & TimeSlot == "without tolerance"] <- dim(filter(dat09, DeliveryInTime == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat09, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-04" & TimeSlot == "with tolerance"] <- dim(filter(dat10, DeliveryInTimeWT == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat10, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-04" & TimeSlot == "without tolerance"] <- dim(filter(dat10, DeliveryInTime == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat10, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-05" & TimeSlot == "with tolerance"] <- dim(filter(dat11, DeliveryInTimeWT == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat11, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-05" & TimeSlot == "without tolerance"] <- dim(filter(dat11, DeliveryInTime == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat11, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-06" & TimeSlot == "with tolerance"] <- dim(filter(dat12, DeliveryInTimeWT == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat12, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-06" & TimeSlot == "without tolerance"] <- dim(filter(dat12, DeliveryInTime == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat12, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-07" & TimeSlot == "with tolerance"] <- dim(filter(dat13, DeliveryInTimeWT == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat13, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-07" & TimeSlot == "without tolerance"] <- dim(filter(dat13, DeliveryInTime == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat13, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-08" & TimeSlot == "with tolerance"] <- dim(filter(dat14, DeliveryInTimeWT == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat14, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-08" & TimeSlot == "without tolerance"] <- dim(filter(dat14, DeliveryInTime == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat14, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-09" & TimeSlot == "with tolerance"] <- dim(filter(dat15, DeliveryInTimeWT == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat15, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-09" & TimeSlot == "without tolerance"] <- dim(filter(dat15, DeliveryInTime == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat15, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-10" & TimeSlot == "with tolerance"] <- dim(filter(dat16, DeliveryInTimeWT == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat16, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-10" & TimeSlot == "without tolerance"] <- dim(filter(dat16, DeliveryInTime == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat16, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-11" & TimeSlot == "with tolerance"] <- dim(filter(dat17, DeliveryInTimeWT == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat17, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-11" & TimeSlot == "without tolerance"] <- dim(filter(dat17, DeliveryInTime == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat17, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-12" & TimeSlot == "with tolerance"] <- dim(filter(dat18, DeliveryInTimeWT == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat18, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2015-12" & TimeSlot == "without tolerance"] <- dim(filter(dat18, DeliveryInTime == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat18, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2016-01" & TimeSlot == "with tolerance"] <- dim(filter(dat19, DeliveryInTimeWT == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat19, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2016-01" & TimeSlot == "without tolerance"] <- dim(filter(dat19, DeliveryInTime == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat19, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2016-02" & TimeSlot == "with tolerance"] <- dim(filter(dat20, DeliveryInTimeWT == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat20, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2016-02" & TimeSlot == "without tolerance"] <- dim(filter(dat20, DeliveryInTime == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat20, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2016-03" & TimeSlot == "with tolerance"] <- dim(filter(dat21, DeliveryInTimeWT == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat21, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2016-03" & TimeSlot == "without tolerance"] <- dim(filter(dat21, DeliveryInTime == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat21, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2016-04" & TimeSlot == "with tolerance"] <- dim(filter(dat22, DeliveryInTimeWT == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat22, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2016-04" & TimeSlot == "without tolerance"] <- dim(filter(dat22, DeliveryInTime == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat22, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2016-05" & TimeSlot == "with tolerance"] <- dim(filter(dat23, DeliveryInTimeWT == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat23, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2016-05" & TimeSlot == "without tolerance"] <- dim(filter(dat23, DeliveryInTime == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat23, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2016-06" & TimeSlot == "with tolerance"] <- dim(filter(dat24, DeliveryInTimeWT == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat24, District == "Hamburg-Mitte"))[1]
+hamburg_mitte$DeliveryInTime[hamburg_mitte$Date == "2016-06" & TimeSlot == "without tolerance"] <- dim(filter(dat24, DeliveryInTime == "Yes" & District == "Hamburg-Mitte"))[1] / dim(filter(dat24, District == "Hamburg-Mitte"))[1]
 
 plot13 <- ggplot(data = hamburg_mitte, aes(x = Date, y = DeliveryInTime, color = TimeSlot, group = TimeSlot)) + geom_line() + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) + scale_color_manual(values = c("blue", "red")) + 
@@ -1564,7 +1564,7 @@ plot15 <- ggplot(data = hamburg_eimsbuettel, aes(x = Date, y = DeliveryInTime, c
   theme(legend.justification=c(1,0), legend.position=c(1,0)) + ggtitle("Time Series: Hamburg Eimsbuettel")
 
 # Hamburg Nord
-District <- rep("Nord", 48)
+District <- rep("Hamburg-Nord", 48)
 Date <- rep(c("2014-07", "2014-08", "2014-09", "2014-10", "2014-11", "2014-12", "2015-01", "2015-02", "2015-03", "2015-04",
               "2015-05", "2015-06", "2015-07", "2015-08", "2015-09", "2015-10", "2015-11", "2015-12", "2016-01", "2016-02", 
               "2016-03", "2016-04", "2016-05", "2016-06"), 2)
@@ -1573,54 +1573,54 @@ DeliveryInTime <- rep(NA, 48)
 TimeSlot <- c(rep("with tolerance", 24), rep("without tolerance", 24))
 hamburg_nord <- data.frame(District, Date, DeliveryInTime, as.factor(TimeSlot)) 
 
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2014-07" & TimeSlot == "with tolerance"] <- dim(filter(dat01, DeliveryInTimeWT == "Yes" & District == "Nord"))[1] / dim(filter(dat01, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2014-07" & TimeSlot == "without tolerance"] <- dim(filter(dat01, DeliveryInTime == "Yes" & District == "Nord"))[1] / dim(filter(dat01, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2014-08" & TimeSlot == "with tolerance"] <- dim(filter(dat02, DeliveryInTimeWT == "Yes" & District == "Nord"))[1] / dim(filter(dat02, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2014-08" & TimeSlot == "without tolerance"] <- dim(filter(dat02, DeliveryInTime == "Yes" & District == "Nord"))[1] / dim(filter(dat02, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2014-09" & TimeSlot == "with tolerance"] <- dim(filter(dat03, DeliveryInTimeWT == "Yes" & District == "Nord"))[1] / dim(filter(dat03, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2014-09" & TimeSlot == "without tolerance"] <- dim(filter(dat03, DeliveryInTime == "Yes" & District == "Nord"))[1] / dim(filter(dat03, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2014-10" & TimeSlot == "with tolerance"] <- dim(filter(dat04, DeliveryInTimeWT == "Yes" & District == "Nord"))[1] / dim(filter(dat04, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2014-10" & TimeSlot == "without tolerance"] <- dim(filter(dat04, DeliveryInTime == "Yes" & District == "Nord"))[1] / dim(filter(dat04, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2014-11" & TimeSlot == "with tolerance"] <- dim(filter(dat05, DeliveryInTimeWT == "Yes" & District == "Nord"))[1] / dim(filter(dat05, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2014-11" & TimeSlot == "without tolerance"] <- dim(filter(dat05, DeliveryInTime == "Yes" & District == "Nord"))[1] / dim(filter(dat05, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2014-12" & TimeSlot == "with tolerance"] <- dim(filter(dat06, DeliveryInTimeWT == "Yes" & District == "Nord"))[1] / dim(filter(dat06, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2014-12" & TimeSlot == "without tolerance"] <- dim(filter(dat06, DeliveryInTime == "Yes" & District == "Nord"))[1] / dim(filter(dat06, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-01" & TimeSlot == "with tolerance"] <- dim(filter(dat07, DeliveryInTimeWT == "Yes" & District == "Nord"))[1] / dim(filter(dat07, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-01" & TimeSlot == "without tolerance"] <- dim(filter(dat07, DeliveryInTime == "Yes" & District == "Nord"))[1] / dim(filter(dat07, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-02" & TimeSlot == "with tolerance"] <- dim(filter(dat08, DeliveryInTimeWT == "Yes" & District == "Nord"))[1] / dim(filter(dat08, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-02" & TimeSlot == "without tolerance"] <- dim(filter(dat08, DeliveryInTime == "Yes" & District == "Nord"))[1] / dim(filter(dat08, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-03" & TimeSlot == "with tolerance"] <- dim(filter(dat09, DeliveryInTimeWT == "Yes" & District == "Nord"))[1] / dim(filter(dat09, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-03" & TimeSlot == "without tolerance"] <- dim(filter(dat09, DeliveryInTime == "Yes" & District == "Nord"))[1] / dim(filter(dat09, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-04" & TimeSlot == "with tolerance"] <- dim(filter(dat10, DeliveryInTimeWT == "Yes" & District == "Nord"))[1] / dim(filter(dat10, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-04" & TimeSlot == "without tolerance"] <- dim(filter(dat10, DeliveryInTime == "Yes" & District == "Nord"))[1] / dim(filter(dat10, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-05" & TimeSlot == "with tolerance"] <- dim(filter(dat11, DeliveryInTimeWT == "Yes" & District == "Nord"))[1] / dim(filter(dat11, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-05" & TimeSlot == "without tolerance"] <- dim(filter(dat11, DeliveryInTime == "Yes" & District == "Nord"))[1] / dim(filter(dat11, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-06" & TimeSlot == "with tolerance"] <- dim(filter(dat12, DeliveryInTimeWT == "Yes" & District == "Nord"))[1] / dim(filter(dat12, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-06" & TimeSlot == "without tolerance"] <- dim(filter(dat12, DeliveryInTime == "Yes" & District == "Nord"))[1] / dim(filter(dat12, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-07" & TimeSlot == "with tolerance"] <- dim(filter(dat13, DeliveryInTimeWT == "Yes" & District == "Nord"))[1] / dim(filter(dat13, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-07" & TimeSlot == "without tolerance"] <- dim(filter(dat13, DeliveryInTime == "Yes" & District == "Nord"))[1] / dim(filter(dat13, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-08" & TimeSlot == "with tolerance"] <- dim(filter(dat14, DeliveryInTimeWT == "Yes" & District == "Nord"))[1] / dim(filter(dat14, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-08" & TimeSlot == "without tolerance"] <- dim(filter(dat14, DeliveryInTime == "Yes" & District == "Nord"))[1] / dim(filter(dat14, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-09" & TimeSlot == "with tolerance"] <- dim(filter(dat15, DeliveryInTimeWT == "Yes" & District == "Nord"))[1] / dim(filter(dat15, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-09" & TimeSlot == "without tolerance"] <- dim(filter(dat15, DeliveryInTime == "Yes" & District == "Nord"))[1] / dim(filter(dat15, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-10" & TimeSlot == "with tolerance"] <- dim(filter(dat16, DeliveryInTimeWT == "Yes" & District == "Nord"))[1] / dim(filter(dat16, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-10" & TimeSlot == "without tolerance"] <- dim(filter(dat16, DeliveryInTime == "Yes" & District == "Nord"))[1] / dim(filter(dat16, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-11" & TimeSlot == "with tolerance"] <- dim(filter(dat17, DeliveryInTimeWT == "Yes" & District == "Nord"))[1] / dim(filter(dat17, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-11" & TimeSlot == "without tolerance"] <- dim(filter(dat17, DeliveryInTime == "Yes" & District == "Nord"))[1] / dim(filter(dat17, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-12" & TimeSlot == "with tolerance"] <- dim(filter(dat18, DeliveryInTimeWT == "Yes" & District == "Nord"))[1] / dim(filter(dat18, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-12" & TimeSlot == "without tolerance"] <- dim(filter(dat18, DeliveryInTime == "Yes" & District == "Nord"))[1] / dim(filter(dat18, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2016-01" & TimeSlot == "with tolerance"] <- dim(filter(dat19, DeliveryInTimeWT == "Yes" & District == "Nord"))[1] / dim(filter(dat19, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2016-01" & TimeSlot == "without tolerance"] <- dim(filter(dat19, DeliveryInTime == "Yes" & District == "Nord"))[1] / dim(filter(dat19, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2016-02" & TimeSlot == "with tolerance"] <- dim(filter(dat20, DeliveryInTimeWT == "Yes" & District == "Nord"))[1] / dim(filter(dat20, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2016-02" & TimeSlot == "without tolerance"] <- dim(filter(dat20, DeliveryInTime == "Yes" & District == "Nord"))[1] / dim(filter(dat20, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2016-03" & TimeSlot == "with tolerance"] <- dim(filter(dat21, DeliveryInTimeWT == "Yes" & District == "Nord"))[1] / dim(filter(dat21, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2016-03" & TimeSlot == "without tolerance"] <- dim(filter(dat21, DeliveryInTime == "Yes" & District == "Nord"))[1] / dim(filter(dat21, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2016-04" & TimeSlot == "with tolerance"] <- dim(filter(dat22, DeliveryInTimeWT == "Yes" & District == "Nord"))[1] / dim(filter(dat22, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2016-04" & TimeSlot == "without tolerance"] <- dim(filter(dat22, DeliveryInTime == "Yes" & District == "Nord"))[1] / dim(filter(dat22, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2016-05" & TimeSlot == "with tolerance"] <- dim(filter(dat23, DeliveryInTimeWT == "Yes" & District == "Nord"))[1] / dim(filter(dat23, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2016-05" & TimeSlot == "without tolerance"] <- dim(filter(dat23, DeliveryInTime == "Yes" & District == "Nord"))[1] / dim(filter(dat23, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2016-06" & TimeSlot == "with tolerance"] <- dim(filter(dat24, DeliveryInTimeWT == "Yes" & District == "Nord"))[1] / dim(filter(dat24, District == "Nord"))[1]
-hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2016-06" & TimeSlot == "without tolerance"] <- dim(filter(dat24, DeliveryInTime == "Yes" & District == "Nord"))[1] / dim(filter(dat24, District == "Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2014-07" & TimeSlot == "with tolerance"] <- dim(filter(dat01, DeliveryInTimeWT == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat01, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2014-07" & TimeSlot == "without tolerance"] <- dim(filter(dat01, DeliveryInTime == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat01, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2014-08" & TimeSlot == "with tolerance"] <- dim(filter(dat02, DeliveryInTimeWT == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat02, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2014-08" & TimeSlot == "without tolerance"] <- dim(filter(dat02, DeliveryInTime == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat02, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2014-09" & TimeSlot == "with tolerance"] <- dim(filter(dat03, DeliveryInTimeWT == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat03, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2014-09" & TimeSlot == "without tolerance"] <- dim(filter(dat03, DeliveryInTime == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat03, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2014-10" & TimeSlot == "with tolerance"] <- dim(filter(dat04, DeliveryInTimeWT == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat04, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2014-10" & TimeSlot == "without tolerance"] <- dim(filter(dat04, DeliveryInTime == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat04, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2014-11" & TimeSlot == "with tolerance"] <- dim(filter(dat05, DeliveryInTimeWT == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat05, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2014-11" & TimeSlot == "without tolerance"] <- dim(filter(dat05, DeliveryInTime == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat05, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2014-12" & TimeSlot == "with tolerance"] <- dim(filter(dat06, DeliveryInTimeWT == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat06, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2014-12" & TimeSlot == "without tolerance"] <- dim(filter(dat06, DeliveryInTime == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat06, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-01" & TimeSlot == "with tolerance"] <- dim(filter(dat07, DeliveryInTimeWT == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat07, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-01" & TimeSlot == "without tolerance"] <- dim(filter(dat07, DeliveryInTime == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat07, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-02" & TimeSlot == "with tolerance"] <- dim(filter(dat08, DeliveryInTimeWT == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat08, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-02" & TimeSlot == "without tolerance"] <- dim(filter(dat08, DeliveryInTime == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat08, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-03" & TimeSlot == "with tolerance"] <- dim(filter(dat09, DeliveryInTimeWT == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat09, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-03" & TimeSlot == "without tolerance"] <- dim(filter(dat09, DeliveryInTime == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat09, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-04" & TimeSlot == "with tolerance"] <- dim(filter(dat10, DeliveryInTimeWT == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat10, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-04" & TimeSlot == "without tolerance"] <- dim(filter(dat10, DeliveryInTime == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat10, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-05" & TimeSlot == "with tolerance"] <- dim(filter(dat11, DeliveryInTimeWT == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat11, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-05" & TimeSlot == "without tolerance"] <- dim(filter(dat11, DeliveryInTime == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat11, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-06" & TimeSlot == "with tolerance"] <- dim(filter(dat12, DeliveryInTimeWT == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat12, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-06" & TimeSlot == "without tolerance"] <- dim(filter(dat12, DeliveryInTime == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat12, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-07" & TimeSlot == "with tolerance"] <- dim(filter(dat13, DeliveryInTimeWT == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat13, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-07" & TimeSlot == "without tolerance"] <- dim(filter(dat13, DeliveryInTime == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat13, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-08" & TimeSlot == "with tolerance"] <- dim(filter(dat14, DeliveryInTimeWT == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat14, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-08" & TimeSlot == "without tolerance"] <- dim(filter(dat14, DeliveryInTime == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat14, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-09" & TimeSlot == "with tolerance"] <- dim(filter(dat15, DeliveryInTimeWT == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat15, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-09" & TimeSlot == "without tolerance"] <- dim(filter(dat15, DeliveryInTime == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat15, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-10" & TimeSlot == "with tolerance"] <- dim(filter(dat16, DeliveryInTimeWT == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat16, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-10" & TimeSlot == "without tolerance"] <- dim(filter(dat16, DeliveryInTime == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat16, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-11" & TimeSlot == "with tolerance"] <- dim(filter(dat17, DeliveryInTimeWT == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat17, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-11" & TimeSlot == "without tolerance"] <- dim(filter(dat17, DeliveryInTime == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat17, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-12" & TimeSlot == "with tolerance"] <- dim(filter(dat18, DeliveryInTimeWT == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat18, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2015-12" & TimeSlot == "without tolerance"] <- dim(filter(dat18, DeliveryInTime == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat18, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2016-01" & TimeSlot == "with tolerance"] <- dim(filter(dat19, DeliveryInTimeWT == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat19, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2016-01" & TimeSlot == "without tolerance"] <- dim(filter(dat19, DeliveryInTime == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat19, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2016-02" & TimeSlot == "with tolerance"] <- dim(filter(dat20, DeliveryInTimeWT == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat20, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2016-02" & TimeSlot == "without tolerance"] <- dim(filter(dat20, DeliveryInTime == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat20, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2016-03" & TimeSlot == "with tolerance"] <- dim(filter(dat21, DeliveryInTimeWT == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat21, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2016-03" & TimeSlot == "without tolerance"] <- dim(filter(dat21, DeliveryInTime == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat21, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2016-04" & TimeSlot == "with tolerance"] <- dim(filter(dat22, DeliveryInTimeWT == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat22, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2016-04" & TimeSlot == "without tolerance"] <- dim(filter(dat22, DeliveryInTime == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat22, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2016-05" & TimeSlot == "with tolerance"] <- dim(filter(dat23, DeliveryInTimeWT == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat23, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2016-05" & TimeSlot == "without tolerance"] <- dim(filter(dat23, DeliveryInTime == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat23, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2016-06" & TimeSlot == "with tolerance"] <- dim(filter(dat24, DeliveryInTimeWT == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat24, District == "Hamburg-Nord"))[1]
+hamburg_nord$DeliveryInTime[hamburg_nord$Date == "2016-06" & TimeSlot == "without tolerance"] <- dim(filter(dat24, DeliveryInTime == "Yes" & District == "Hamburg-Nord"))[1] / dim(filter(dat24, District == "Hamburg-Nord"))[1]
 
 plot16 <- ggplot(data = hamburg_nord, aes(x = Date, y = DeliveryInTime, color = TimeSlot, group = TimeSlot)) + geom_line() + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) + scale_color_manual(values = c("blue", "red")) +
@@ -1816,3 +1816,36 @@ plot19 <- ggplot(data = hamburg_harburg, aes(x = Date, y = DeliveryInTime, color
   theme(legend.justification=c(1,0), legend.position=c(1,0)) + ggtitle("Time Series: Hamburg Harburg")
 
 grid.arrange(plot13, plot14, plot15, plot16, plot17, plot18, plot19, ncol = 2, nrow = 4)
+
+# Erstellen eines kompakten Datensatz fuer Plot DeliveryInTimeWT
+District <- factor(rep(c("Altona", "Bergedorf", "Eimsbuettel", "Hamburg-Mitte", "Hamburg-Nord", "Harburg", "Wandsbek"), 2))
+DeliveryInTimeWT <- factor(c(rep("Yes", 7), rep("No", 7)))
+dataset9 <- data.frame(District, DeliveryInTimeWT)
+# Berechnen der Anteile fuer Zustellung im TimeSlot
+dataset9$Percentage[dataset9$District == "Altona" & dataset9$DeliveryInTimeWT == "Yes"] <- round(sum(as.integer(hamburg$DeliveryInTimeWT[hamburg$District == "Altona" & as.integer(hamburg$DeliveryInTimeWT) == 1])) / length(hamburg$DeliveryInTimeWT[hamburg$District == "Altona"]) * 100, 2)
+dataset9$Percentage[dataset9$District == "Bergedorf" & dataset9$DeliveryInTimeWT == "Yes"] <- round(sum(as.integer(hamburg$DeliveryInTimeWT[hamburg$District == "Bergedorf" & as.integer(hamburg$DeliveryInTimeWT) == 1])) / length(hamburg$DeliveryInTimeWT[hamburg$District == "Bergedorf"]) * 100, 2) 
+dataset9$Percentage[dataset9$District == "Eimsbuettel" & dataset9$DeliveryInTimeWT == "Yes"] <- round(sum(as.integer(hamburg$DeliveryInTimeWT[hamburg$District == "Eimsbuettel" & as.integer(hamburg$DeliveryInTimeWT) == 1])) / length(hamburg$DeliveryInTimeWT[hamburg$District == "Eimsbuettel"]) * 100, 2) 
+dataset9$Percentage[dataset9$District == "Hamburg-Mitte" & dataset9$DeliveryInTimeWT == "Yes"] <- round(sum(as.integer(hamburg$DeliveryInTimeWT[hamburg$District == "Hamburg-Mitte" & as.integer(hamburg$DeliveryInTimeWT) == 1])) / length(hamburg$DeliveryInTimeWT[hamburg$District == "Hamburg-Mitte"]) * 100, 2) 
+dataset9$Percentage[dataset9$District == "Hamburg-Nord" & dataset9$DeliveryInTimeWT == "Yes"] <- round(sum(as.integer(hamburg$DeliveryInTimeWT[hamburg$District == "Hamburg-Nord" & as.integer(hamburg$DeliveryInTimeWT) == 1])) / length(hamburg$DeliveryInTimeWT[hamburg$District == "Hamburg-Nord"]) * 100, 2) 
+dataset9$Percentage[dataset9$District == "Harburg" & dataset9$DeliveryInTimeWT == "Yes"] <- round(sum(as.integer(hamburg$DeliveryInTimeWT[hamburg$District == "Harburg" & as.integer(hamburg$DeliveryInTimeWT) == 1])) / length(hamburg$DeliveryInTimeWT[hamburg$District == "Harburg"]) * 100, 2) 
+dataset9$Percentage[dataset9$District == "Wandsbek" & dataset9$DeliveryInTimeWT == "Yes"] <- round(sum(as.integer(hamburg$DeliveryInTimeWT[hamburg$District == "Wandsbek" & as.integer(hamburg$DeliveryInTimeWT) == 1])) / length(hamburg$DeliveryInTimeWT[hamburg$District == "Wandsbek"]) * 100, 2) 
+# Berechnung der Anteile fuer Zustellung ausserhalb des TimeSlot
+dataset9$Percentage[dataset9$District == "Altona" & dataset9$DeliveryInTimeWT == "No"] <- round(100 - dataset9$Percentage[dataset9$District == "Altona" & dataset9$DeliveryInTimeWT == "Yes"], 2)
+dataset9$Percentage[dataset9$District == "Bergedorf" & dataset9$DeliveryInTimeWT == "No"] <- round(100 - dataset9$Percentage[dataset9$District == "Bergedorf" & dataset9$DeliveryInTimeWT == "Yes"], 2)
+dataset9$Percentage[dataset9$District == "Eimsbuettel" & dataset9$DeliveryInTimeWT == "No"] <- round(100 - dataset9$Percentage[dataset9$District == "Eimsbuettel" & dataset9$DeliveryInTimeWT == "Yes"], 2)
+dataset9$Percentage[dataset9$District == "Hamburg-Mitte" & dataset9$DeliveryInTimeWT == "No"] <- round(100 - dataset9$Percentage[dataset9$District == "Hamburg-Mitte" & dataset9$DeliveryInTimeWT == "Yes"], 2)
+dataset9$Percentage[dataset9$District == "Hamburg-Nord" & dataset9$DeliveryInTimeWT == "No"] <- round(100 - dataset9$Percentage[dataset9$District == "Hamburg-Nord" & dataset9$DeliveryInTimeWT == "Yes"], 2)
+dataset9$Percentage[dataset9$District == "Harburg" & dataset9$DeliveryInTimeWT == "No"] <- round(100 - dataset9$Percentage[dataset9$District == "Harburg" & dataset9$DeliveryInTimeWT == "Yes"], 2)
+dataset9$Percentage[dataset9$District == "Wandsbek" & dataset9$DeliveryInTimeWT == "No"] <- round(100 - dataset9$Percentage[dataset9$District == "Wandsbek" & dataset9$DeliveryInTimeWT == "Yes"], 2)
+# Berechnung fuer Position der Anteilswerte im Plot
+dataset9 <- ddply(dataset9, .(District), transform, Position = cumsum(Percentage) - (0.5 * Percentage))
+# Vertauschen deR Level fuer Plot
+#levels(dataset6$DeliveryInTime) <- list("Yes" = 1, "No" = 0)
+levels(dataset9$DeliveryInTimeWT) <- list("No" = 0, "Yes" = 1)
+# Umordnung der Level von District (Plot: y-Achse absteigend)
+dataset9$District <- factor(dataset9$District, levels = c("Wandsbek", "Harburg", "Hamburg-Nord", "Hamburg-Mitte", "Eimsbuettel", "Bergedorf", "Altona"))
+# Erstellen des Plot
+ggplot() + geom_bar(aes(y = Percentage, x = District, fill = DeliveryInTimeWT), data = dataset9, stat = "identity") + geom_text(data = dataset9, aes(x = District, y = Position, label = paste0(Percentage, "%")), size = 4) + 
+  scale_fill_manual(values = c("darkred", "darkgreen"), breaks = c("Yes", "No")) + ggtitle("DeliverySurvey (with Tolerance)") + xlab("District") + 
+  ylab("DeliveryInTime") + theme(legend.position = "bottom", legend.direction = "horizontal", 
+                                 legend.title = element_blank()) + scale_y_continuous(labels = dollar_format(suffix = "%", prefix = "")) + coord_flip()
